@@ -3,23 +3,34 @@ import streamlit as st
 
 # Define the Streamlit app
 def app():
-    # Form 1 for user information
-    form1 = st.form("user_info")
-    name = form1.text_input("Enter your name")
-    age = form1.number_input("Enter your age", min_value=0)
-    submit1 = form1.form_submit_button("Submit")
-    
-    if submit1:
-        st.write(f"Hello, {name}! You are {age} years old.")
-    
-    # Form 2 for feedback
-    form2 = st.form("feedback")
-    rating = form2.selectbox("Rate your experience", [1, 2, 3, 4, 5])
-    feedback = form2.text_area("Tell us what you think")
-    submit2 = form2.form_submit_button("Submit")
-    
-    if submit2:
-        st.write("Thank you for your feedback!")
+import streamlit as st
 
+# Session state to track form progress
+if "current_form" not in st.session_state:
+    st.session_state["current_form"] = "form1"
+
+# Form 1 for login
+if st.session_state["current_form"] == "form1":
+    form1 = st.form("login")
+    username = form1.text_input("Enter username")
+    password = form1.text_input("Enter password", type="password")
+    submit1 = form1.form_submit_button("Login")
+
+    if submit1:
+        # Validate credentials and update session state
+        if username == "admin" and password == "secret":
+            st.session_state["current_form"] = "form2"
+        else:
+            st.error("Invalid credentials")
+
+# Form 2 for product selection
+if st.session_state["current_form"] == "form2":
+    form2 = st.form("product_selection")
+    product = form2.selectbox("Choose your product", ["Product A", "Product B"])
+    submit2 = form2.form_submit_button("Submit")
+
+    if submit2:
+        st.write(f"You selected {product}")
+        
 if __name__ == "__main__":
     app()
