@@ -29,5 +29,5 @@ def app():
         if submit2:
             st.write(f"You selected {product}")
             
-    if __name__ == "__main__":
+if __name__ == "__main__":
     app()
